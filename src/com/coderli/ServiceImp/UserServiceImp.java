@@ -21,8 +21,8 @@ public class UserServiceImp implements UserService{
 	}
 	//插入用户签到信息
 	@Override
-	public int insertSign(String unumber, String inDate, String inTime) {
-		return userDao.insertSign(unumber,inDate,inTime);
+	public int insertSign(String unumber, String inDate, String inTime,String inStatus) {
+		return userDao.insertSign(unumber,inDate,inTime,inStatus);
 	}
 	//查询用户是否已经签到
 	@Override
@@ -32,8 +32,23 @@ public class UserServiceImp implements UserService{
 
 	@Override
 	public int updateSignOutInfoService(String unumber, String outTime,
-			String outDate) {
-		return UserDaoImp.updateSignOutInfo(unumber,outTime,outDate);
+			String outDate,String outStatus) {
+		return userDao.updateSignOutInfo(unumber,outTime,outDate,outStatus);
+	}
+	//修改用户的密码
+	@Override
+	public int updateUserNewPwdInfoService(String newPwd, int unumber) {
+		return userDao.updateUserNewPwdInfo(newPwd,unumber);
+	}
+	//获取角色名
+	@Override
+	public String getRnameInfoService(String rid) {
+		return userDao.getRnameInfo(rid);
+	}
+	//获取上级的名字
+	@Override
+	public String getPnameInfoService(String pnumber) {
+		return userDao.getPnameInfo(pnumber);
 	}
 
 }

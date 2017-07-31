@@ -30,64 +30,118 @@ public class UserServlet extends HttpServlet {
 		if ("login".equals(oper)) {
 			userLogin(req, resp);
 			return;
-		} else if("out".equals(oper)) {
+		} else if ("out".equals(oper)) {
 			userOut(req, resp);
 			return;
-		}else if("in".equals(oper)){
-			userSign(req,resp);
-		}else if("sout".equals(oper)){
-			userSignOut(req,resp);
-		}else{
-			System.out.println("UserServlet.userOut("+oper+")没有找到");
+		} else if ("in".equals(oper)) {
+			userSign(req, resp);
+		} else if ("sout".equals(oper)) {
+			userSignOut(req, resp);
+		} else if ("pwd".equals(oper)) {
+			userCheckOldPwd(req, resp);
+		} else if ("newPwd".equals(oper)) {
+			userUpdateNewPwd(req, resp);
+		} else if ("info".equals(oper)) {
+			getUserInfo(req, resp);
+		} else {
+			System.out.println("UserServlet.userOut(" + oper + ")没有找到");
 		}
 	}
 
-	private void userSignOut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		//获取请求信息
-			String unumber=req.getParameter("unumber");
-			String outTime=req.getParameter("outTime");
-			String outDate=req.getParameter("outDate");
-//			System.out.println("UserServlet:"+unumber+":"+outTime+":"+outDate);
-		//处理请求信息
-			//调用service层将签退信息更新到数据库中
-				UserService service = new UserServiceImp();
-			//查询是否已经签到
-				boolean flag = service.checkInInfoService(unumber, outDate);
-				if(flag){
-					int i=service.updateSignOutInfoService(unumber,outTime,outDate);
-//					System.out.println("签退结果为:"+i);
-					//响应处理结果
-					if(i>0){
-						resp.getWriter().write("true");
-					}else{
-						resp.getWriter().write("false");
-					}
-				}else{
-					resp.getWriter().write("a");
-				}
+	private void getUserInfo(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		//获取用户请求信息
+		String rid=req.getParameter("rid");
+		String pnumber=req.getParameter("pnumber");
+		//处理用户请求信息
+		UserService service = new UserServiceImp();
+		String rname=service.getRnameInfoService(rid);
+		String pname=service.getPnameInfoService(pnumber);
+		//响应处理结果
+		String str="{rname:'"+rname+"',pname:'"+pname+"'}";
+		resp.getWriter().write(str);
 	}
 
-	private void userSign(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		//获取请求信息
-		String unumber=req.getParameter("unumber");
-		String inDate=req.getParameter("inDate");
-		String inTime=req.getParameter("inTime");
-		//处理请求信息
-			//调用service层将信息插入数据库
-				UserService service = new UserServiceImp();
-			//查询用户是否已经签到
-				boolean flag = service.checkInInfoService(unumber,inDate);
-			//开始签到
-				if(!flag){
-					int count = service.insertSign(unumber,inTime,inDate);
-					if(count>0){
-						resp.getWriter().write("true");
-					}else{
-						resp.getWriter().write("false");
-					}
-				}else{
-					resp.getWriter().write("a");
-				}
+	private void userUpdateNewPwd(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		// 获取请求数据
+		String newPwd = req.getParameter("newPwd");
+		int unumber = ((User) req.getSession().getAttribute("user"))
+				.getUnumber();
+		// 处理请求数据
+		UserService service = new UserServiceImp();
+		int count = service.updateUserNewPwdInfoService(newPwd, unumber);
+		System.out.println("处理结果为:" + count);
+		// 响应处理结果
+		if (count > 0) {
+			resp.sendRedirect("login.jsp");
+		}
+	}
+
+	private void userCheckOldPwd(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		// 获取请求数据
+		String oldPwd = req.getParameter("oldPwd");
+		// 处理请求数据
+		String pwd = ((User) req.getSession().getAttribute("user")).getUpwd();
+		if (pwd.equals(oldPwd)) {
+			resp.getWriter().write("true");
+		} else {
+			resp.getWriter().write("false");
+		}
+	}
+
+	private void userSignOut(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		// 获取请求信息
+		String unumber = req.getParameter("unumber");
+		String outTime = req.getParameter("outTime");
+		String outDate = req.getParameter("outDate");
+		String outStatus = req.getParameter("outStatus");
+		// System.out.println("UserServlet:"+unumber+":"+outTime+":"+outDate);
+		// 处理请求信息
+		// 调用service层将签退信息更新到数据库中
+		UserService service = new UserServiceImp();
+		// 查询是否已经签到
+		boolean flag = service.checkInInfoService(unumber, outDate);
+		if (flag) {
+			int i = service.updateSignOutInfoService(unumber, outTime, outDate,
+					outStatus);
+			// System.out.println("签退结果为:"+i);
+			// 响应处理结果
+			if (i > 0) {
+				resp.getWriter().write(outStatus);
+			} else {
+				resp.getWriter().write("false");
+			}
+		} else {
+			resp.getWriter().write("a");
+		}
+	}
+
+	private void userSign(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		// 获取请求信息
+		String unumber = req.getParameter("unumber");
+		String inDate = req.getParameter("inDate");
+		String inTime = req.getParameter("inTime");
+		String inStatus = req.getParameter("inStatus");
+		// 处理请求信息
+		// 调用service层将信息插入数据库
+		UserService service = new UserServiceImp();
+		// 查询用户是否已经签到
+		boolean flag = service.checkInInfoService(unumber, inDate);
+		// 开始签到
+		if (!flag) {
+			int count = service.insertSign(unumber, inTime, inDate, inStatus);
+			if (count > 0) {
+				resp.getWriter().write(inStatus);
+
+			} else {
+				resp.getWriter().write("false");
+			}
+		} else {
+			resp.getWriter().write("a");
+		}
 	}
 
 	private void userOut(HttpServletRequest req, HttpServletResponse resp)
@@ -108,8 +162,8 @@ public class UserServlet extends HttpServlet {
 		User user = service.checkLoginInfo(unumber, upwd);
 		// 响应处理结果
 		if (user != null) {
-			//获取用户角色权限对应的菜单
-			List<Menu> list= service.getMenuInfoByRid(user.getRid());
+			// 获取用户角色权限对应的菜单
+			List<Menu> list = service.getMenuInfoByRid(user.getRid());
 			System.out.println(list);
 			HttpSession session = req.getSession();
 			session.setAttribute("user", user);

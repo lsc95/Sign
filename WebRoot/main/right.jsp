@@ -62,6 +62,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		if(s.toString().length<2){
 			s="0"+s;
 		}
+		if(m.toString().length<2){
+			m="0"+m;
+		}
 		$("#timeSpan").html(h+":"+m+":"+s);
 		window.setTimeout(getTimeInfo, 1000);
 	}
@@ -73,6 +76,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#dateSpan").html(y+"-"+m+"-"+d);
 	}
 	function signAjax(){
+		var h=new Date().getHours();
+		var inStatus=0;
+		if(h>=9)
+			inStatus=1;
 		var unumber=${user.unumber};
 		var inTime=$("#timeSpan").html();
 		var inDate=$("#dateSpan").html();
@@ -80,13 +87,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				unumber:unumber,
 				inTime:inTime,
 				inDate:inDate,
+				inStatus:inStatus,
 				oper:'in'
 		};
 		$.get("user",dt,function(data){
 			if("a"==data){
 				alert("已经签到，不能重复签到");
-			}else if(eval(data)){
-				alert("签到成功");
+			}else if(0==data){
+				alert("签到成功-正常");
+			}else if(1==data){
+				alert("签到成功-迟到");
 			}else{
 				alert("签到失败");
 			}
@@ -94,6 +104,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}	
 	function signOutAjax(){
 		//获取签退信息
+			var h=new Date().getHours();
+			var outStatus=0;
+			if(h<18){
+				outStatus=1;
+			}
 			var unumber=${user.unumber};
 			var outTime=$("#timeSpan").html();
 			var outDate=$("#dateSpan").html();
@@ -102,13 +117,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				unumber:unumber,
 				outTime:outTime,
 				outDate:outDate,
+				outStatus:outStatus,
 				oper:'sout'
 			};
 		$.get("user",dt,function(data){
 			if("a"==data){
 				alert("请先签到");
-			}else if(eval(data)){
-				alert("签退成功");
+			}else if(0==data){
+				alert("签退成功-正常");
+			}else if(1==data){
+				alert("签退成功-早退");
 			}else{
 				alert("签退失败");
 			}

@@ -52,14 +52,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			text-align:center;
 		}
 	</style>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript">
+		var flag=false;
+		//原始密码校验
+		function checkOldPwd(){
+			//创建请求数据
+			var oldPwd=$("#oldPwd").val();
+			var dt={
+					oldPwd:oldPwd,
+					oper:"pwd"
+			};
+			$.get("user",dt,function(data){
+				if(eval(data)){
+					$("#oldSpan").css("color","green");
+					$("#oldSpan").html("密码正确");
+					flag=true;
+				}else{
+					$("#oldSpan").css("color","darkred");
+					$("#oldSpan").html("密码错误");
+				}	
+			});
+		}
+		function updatePwd(){
+			if(flag){
+				var fm =document.getElementById("fm");
+				fm.submit();
+			}else{
+				$("#oldSpan").css("color","darkred");
+				$("#oldSpan").html("原始密码错误");
+			}
+		}
+	</script>
   </head>
   
   <body>
+  	<form action="user" method="post" id="fm" target="_top">
+  		<input type="hidden" name="oper" value="newPwd" />
 		<div id="showdiv">
 			<table>
 				<tr>
 					<td width="100px">原始密码</td>
-					<td width="350px"><input type="password"  name="oldPwd" id="oldPwd" placeholder="情输入原始密码"/></td>
+					<td width="350px">
+						<input type="password"  name="oldPwd" id="oldPwd" placeholder="情输入原始密码" onblur="checkOldPwd()"/>
+						<span id="oldSpan"></span>
+					</td>
 				</tr>
 				<tr>
 					<td>新密码</td>
@@ -68,7 +105,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</table>
 		</div>
 		<div id="div01">
-			<input type="button" value="确认修改" />
+			<input type="button" value="确认修改" onclick="updatePwd()"/>
 		</div>
+	</form>
   </body>
 </html>

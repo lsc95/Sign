@@ -37,9 +37,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			margin:auto;
 		}
 	</style>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript">
+		function getUserInfo(){
+			//创建请求数据
+			var dt={
+					rid:${user.rid},
+					pnumber:${user.pnumber},
+					oper:"info"
+			};
+			$.get("user",dt,function(data){
+				eval("var data="+data);
+				$("#rname").html(data.rname);
+				$("#pname").html(data.pname);
+			});
+		}
+	</script>
   </head>
   
-  <body>
+  <body onload="getUserInfo()">
 		<div id="showdiv">
 			<table>
 				<tr>
@@ -64,11 +80,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</tr>
 				<tr>
 					<td>角色</td>
-					<td>${user.rid }</td>
+					<td id="rname">${user.rid }</td>
 				</tr>
 				<tr>
 					<td>组长</td>
-					<td>${user.pnumber }</td>
+					<td id="pname">${user.pnumber }</td>
 				</tr>
 			</table>
 		</div>

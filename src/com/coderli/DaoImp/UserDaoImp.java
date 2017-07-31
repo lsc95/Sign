@@ -73,9 +73,9 @@ public class UserDaoImp implements UserDao {
 	}
 	//插入用户签到信息
 	@Override
-	public int insertSign(String unumber, String inDate, String inTime) {
-		String sql = "insert into sign(unumber,sintime,sdate) values(?,?,?)";
-		return DBUtils.executeDML(sql,unumber,inDate,inTime);
+	public int insertSign(String unumber, String inDate, String inTime,String inStatus) {
+		String sql = "insert into sign(unumber,sintime,sdate,sinstatus) values(?,?,?,?)";
+		return DBUtils.executeDML(sql,unumber,inDate,inTime,inStatus);
 	}
 
 	@Override
@@ -101,11 +101,55 @@ public class UserDaoImp implements UserDao {
 		return flag;
 	}
 	//插入用户的签退信息
-	public static int updateSignOutInfo(String unumber, String outTime,
-			String outDate) {
+	public int updateSignOutInfo(String unumber, String outTime,
+			String outDate, String outStatus) {
 		//创建Sql
-		String sql="update sign set souttime=? where unumber=? and sdate=?";
-		return DBUtils.executeDML(sql, outTime,unumber,outDate);
+		String sql="update sign set souttime=?,soutstatus=? where unumber=? and sdate=?";
+		return DBUtils.executeDML(sql, outTime,outStatus,unumber,outDate);
+	}
+
+	@Override
+	public int updateUserNewPwdInfo(String newPwd, int unumber) {
+		String sql="update user set upwd=? where unumber=?";
+		return DBUtils.executeDML(sql, newPwd,unumber);
+	}
+
+	@Override
+	public String getRnameInfo(String rid) {
+		String rname=null;
+		try {
+			conn=DBUtils.getConnection();
+			String sql="select rname from role where rid=?";
+			ps=DBUtils.getPreparedStatement(sql, conn);
+			DBUtils.bindParams(ps, rid);
+			rs=ps.executeQuery();
+			if(rs.next()){
+				rname=rs.getString("rname");
+			}
+		} catch (Exception e) {
+		}finally{
+			DBUtils.closeAll(rs,ps,conn);
+		}
+		return rname;
+	}
+
+	@Override
+	public String getPnameInfo(String pnumber) {
+		String pname=null;
+		try {
+			conn=DBUtils.getConnection();
+			String sql="select uname from user where unumber=?";
+			ps=DBUtils.getPreparedStatement(sql, conn);
+			DBUtils.bindParams(ps, pnumber);
+			rs=ps.executeQuery();
+			if(rs.next()){
+				pname=rs.getString("uname");
+			}
+		} catch (Exception e) {
+		}finally{
+			DBUtils.closeAll(rs,ps,conn);
+		}
+		return pname;
 	}
 
 }
