@@ -32,6 +32,16 @@ $(document).ready(function(){
 });
 
 });
+function checkRange(){
+	if(${page}==${pageCount}){
+		alert("最后一页了！")
+	}else if(${page}==1){
+		alert("这是首页！")
+	}else{
+		return true;
+	}
+	return false;
+}
 </script>
 
 
@@ -73,27 +83,25 @@ $(document).ready(function(){
     	<tr>
         <th><input name="" type="checkbox" value="" checked="checked"/></th>
         <th>编号<i class="sort"><img src="images/px.gif" /></i></th>
-        <th>用户</th>
-        <th>籍贯</th>
-        <th>性别</th>
-        <th>年龄</th>
-        <th>角色</th>
-        <th>上一级姓名</th>
-        <th>操作</th>
+        <th>姓名</th>
+        <th>签到时间</th>
+        <th>签到状态</th>
+        <th>签退时间</th>
+        <th>签退状态</th>
+        <th>日期</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${list}" var="u">
+        <c:forEach items="${list}" var="s">
 	        <tr>
 		        <td><input name="" type="checkbox" value="" /></td>
-		        <td>${u.unumber}</td>
-		        <td>${u.uname }</td>
-		        <td>${u.uaddress }</td>
-		        <td>${u.usex }</td>
-		        <td>${u.uage }</td>
-		        <td>学生</td>
-		        <td>${user.uname }</td>
-		        <td><a href="group?oper=showSign&unumber=${u.unumber }&uname=${u.uname}&page=1" class="tablelink">查看签到信息</a>
+		        <td>${s.sid}</td>
+		        <td>${uname }</td>
+		        <td>${s.sintime }</td>
+		        <td>${s.sinstatus==1?"迟到":"正常"}</td>
+		        <td>${s.souttime}</td>
+		        <td>${s.soutstatus==1?"早退":"正常" }</td>
+		        <td>${s.sdate}</td>
 	        </tr> 
         </c:forEach>
         
@@ -104,17 +112,13 @@ $(document).ready(function(){
     
    
     <div class="pagin">
-    	<div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
+    	<div class="message">共<i class="blue">${pageCount }</i>条记录，当前显示第&nbsp;<i class="blue">${page }&nbsp;</i>页</div>
         <ul class="paginList">
-        <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-        <li class="paginItem"><a href="javascript:;">1</a></li>
-        <li class="paginItem current"><a href="javascript:;">2</a></li>
-        <li class="paginItem"><a href="javascript:;">3</a></li>
-        <li class="paginItem"><a href="javascript:;">4</a></li>
-        <li class="paginItem"><a href="javascript:;">5</a></li>
-        <li class="paginItem more"><a href="javascript:;">...</a></li>
-        <li class="paginItem"><a href="javascript:;">10</a></li>
-        <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+        <li class="paginItem"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${page-1}" onclick="return checkRange();"><span class="pagepre"></span></a></li>
+        <c:forEach begin="1" end="${pageCount}" var="i">
+        	<li class="paginItem <c:if test='${page==i}'>current</c:if>"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${i}">${i }</a></li>
+        </c:forEach>
+        <li class="paginItem"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${page+1}" onclick="return checkRange();"><span class="pagenxt"></span></a></li>
         </ul>
     </div>
     

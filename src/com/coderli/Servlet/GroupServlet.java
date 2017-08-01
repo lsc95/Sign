@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.coderli.Service.GroupService;
 import com.coderli.ServiceImp.GroupServiceImp;
+import com.coderli.entry.Sign;
 import com.coderli.entry.User;
 
 public class GroupServlet extends HttpServlet {
@@ -26,7 +27,31 @@ public class GroupServlet extends HttpServlet {
 		String oper = req.getParameter("oper");
 		if("groupInfo".equals(oper)){
 			getGroupInfo(req,resp);
+		}else if("showSign".equals(oper)){
+			showSignInfo(req,resp);
+		}else{
+			resp.getWriter().write("请求的url不存在");
 		}
+	}
+	private void showSignInfo(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		//获取请求信息
+		String unumber=req.getParameter("unumber");
+		String uname= req.getParameter("uname");
+		String page=req.getParameter("page");
+		page=Integer.parseInt(page)<1?1+"":page;
+		//处理请求信息
+		GroupService service = new GroupServiceImp();
+		int count=service.getSignCountService(unumber);
+		int pageCount=(int)Math.ceil(count*1.0/5);
+		page=Integer.parseInt(page)>pageCount?pageCount+"":page;
+		List<Sign> list =service.getSignInfoService(unumber,page);
+		//响应处理结果
+		req.setAttribute("pageCount", pageCount);
+		req.setAttribute("page", page);
+		req.setAttribute("list", list);
+		req.setAttribute("uname", uname);
+		req.getRequestDispatcher("group/showSign.jsp").forward(req, resp);
 	}
 	private void getGroupInfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//获取请求信息

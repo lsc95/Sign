@@ -16,11 +16,13 @@ public class User implements Serializable{
 	private String uaddress;
 	private int rid;
 	private int pnumber;
+	private String pname;
+	private String rname;
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
 	public User(int unumber, String uname, String upwd, String usex, int uage,
-			String uaddress, int rid, int pnumber) {
+			String uaddress, int rid, int pnumber, String pname, String rname) {
 		super();
 		this.unumber = unumber;
 		this.uname = uname;
@@ -30,6 +32,8 @@ public class User implements Serializable{
 		this.uaddress = uaddress;
 		this.rid = rid;
 		this.pnumber = pnumber;
+		this.pname = pname;
+		this.rname = rname;
 	}
 	public int getUnumber() {
 		return unumber;
@@ -79,18 +83,29 @@ public class User implements Serializable{
 	public void setPnumber(int pnumber) {
 		this.pnumber = pnumber;
 	}
-	@Override
-	public String toString() {
-		return "User [unumber=" + unumber + ", uname=" + uname + ", upwd="
-				+ upwd + ", usex=" + usex + ", uage=" + uage + ", uaddress="
-				+ uaddress + ", rid=" + rid + ", pnumber=" + pnumber + "]";
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	public String getRname() {
+		return rname;
+	}
+	public void setRname(String rname) {
+		this.rname = rname;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((pname == null) ? 0 : pname.hashCode());
 		result = prime * result + pnumber;
 		result = prime * result + rid;
+		result = prime * result + ((rname == null) ? 0 : rname.hashCode());
 		result = prime * result
 				+ ((uaddress == null) ? 0 : uaddress.hashCode());
 		result = prime * result + uage;
@@ -109,9 +124,19 @@ public class User implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (pname == null) {
+			if (other.pname != null)
+				return false;
+		} else if (!pname.equals(other.pname))
+			return false;
 		if (pnumber != other.pnumber)
 			return false;
 		if (rid != other.rid)
+			return false;
+		if (rname == null) {
+			if (other.rname != null)
+				return false;
+		} else if (!rname.equals(other.rname))
 			return false;
 		if (uaddress == null) {
 			if (other.uaddress != null)
@@ -138,6 +163,13 @@ public class User implements Serializable{
 		} else if (!usex.equals(other.usex))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "User [unumber=" + unumber + ", uname=" + uname + ", upwd="
+				+ upwd + ", usex=" + usex + ", uage=" + uage + ", uaddress="
+				+ uaddress + ", rid=" + rid + ", pnumber=" + pnumber
+				+ ", pname=" + pname + ", rname=" + rname + "]";
 	}
 	
 }
