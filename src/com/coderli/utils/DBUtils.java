@@ -98,6 +98,8 @@ public class DBUtils {
 			i=ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			closeAll(ps,conn);
 		}
 		return i;
 	}

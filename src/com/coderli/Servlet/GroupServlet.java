@@ -42,7 +42,12 @@ public class GroupServlet extends HttpServlet {
 		page=Integer.parseInt(page)<1?1+"":page;
 		//处理请求信息
 		GroupService service = new GroupServiceImp();
-		int count=service.getSignCountService(unumber);
+		long count=service.getSignCountService(unumber);
+		//当无数据时直接跳转
+		if(count==0){
+			req.getRequestDispatcher("group/showSign.jsp").forward(req, resp);
+			return;
+		}
 		int pageCount=(int)Math.ceil(count*1.0/5);
 		page=Integer.parseInt(page)>pageCount?pageCount+"":page;
 		List<Sign> list =service.getSignInfoService(unumber,page);

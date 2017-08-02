@@ -21,7 +21,7 @@ public class GroupServiceImp implements GroupService{
 	}
 	//根据学生的学号获取学生签到信息数量
 	@Override
-	public int getSignCountService(String unumber) {
+	public long getSignCountService(String unumber) {
 		return dao.getSignCount(unumber);
 	}
 

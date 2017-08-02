@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-07-31 18:22:26
+Date: 2017-08-02 20:24:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,9 +34,9 @@ INSERT INTO `menu` VALUES ('1', '签到签退', null, 'main/right.jsp');
 INSERT INTO `menu` VALUES ('2', '查看个人信息', null, 'common/userInfo.jsp');
 INSERT INTO `menu` VALUES ('3', '修改密码', null, 'common/updatePwd.jsp');
 INSERT INTO `menu` VALUES ('4', '查看小组信息', null, 'group?oper=groupInfo');
-INSERT INTO `menu` VALUES ('5', '查看班级信息', null, '');
-INSERT INTO `menu` VALUES ('6', '管理学生信息', null, '');
-INSERT INTO `menu` VALUES ('7', '添加学生', null, '');
+INSERT INTO `menu` VALUES ('5', '查看班级信息', null, 'clazz?oper=clazzInfo');
+INSERT INTO `menu` VALUES ('6', '管理学生信息', null, 'admin?oper=adminInfo');
+INSERT INTO `menu` VALUES ('7', '添加学生', null, 'admin/addUser.jsp');
 INSERT INTO `menu` VALUES ('8', '查看班级签到信息', null, '');
 
 -- ----------------------------
@@ -58,6 +58,14 @@ INSERT INTO `rm` VALUES ('2', '1');
 INSERT INTO `rm` VALUES ('2', '2');
 INSERT INTO `rm` VALUES ('2', '3');
 INSERT INTO `rm` VALUES ('2', '4');
+INSERT INTO `rm` VALUES ('3', '1');
+INSERT INTO `rm` VALUES ('3', '2');
+INSERT INTO `rm` VALUES ('3', '3');
+INSERT INTO `rm` VALUES ('3', '5');
+INSERT INTO `rm` VALUES ('4', '1');
+INSERT INTO `rm` VALUES ('4', '6');
+INSERT INTO `rm` VALUES ('4', '7');
+INSERT INTO `rm` VALUES ('4', '8');
 
 -- ----------------------------
 -- Table structure for role
@@ -89,15 +97,36 @@ CREATE TABLE `sign` (
   `sinstatus` char(2) DEFAULT NULL,
   `souttime` varchar(100) DEFAULT NULL,
   `soutstatus` char(2) DEFAULT NULL,
-  `sdate` varchar(100) NOT NULL,
+  `sdate` date NOT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sign
 -- ----------------------------
-INSERT INTO `sign` VALUES ('9', '20170729', '15:4:14', '1', '17:33:41', '1', '2017-7-31');
-INSERT INTO `sign` VALUES ('10', '20170731', '18:5:42', '1', '18:5:44', '0', '2017-7-31');
+INSERT INTO `sign` VALUES ('9', '20170729', '15:4:14', '1', '17:33:41', '1', '2017-07-31');
+INSERT INTO `sign` VALUES ('10', '20170731', '18:5:42', '1', '18:5:44', '0', '2017-07-31');
+INSERT INTO `sign` VALUES ('11', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-10');
+INSERT INTO `sign` VALUES ('12', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-11');
+INSERT INTO `sign` VALUES ('13', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-12');
+INSERT INTO `sign` VALUES ('14', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-13');
+INSERT INTO `sign` VALUES ('15', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-14');
+INSERT INTO `sign` VALUES ('16', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-15');
+INSERT INTO `sign` VALUES ('17', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-16');
+INSERT INTO `sign` VALUES ('18', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-17');
+INSERT INTO `sign` VALUES ('19', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-18');
+INSERT INTO `sign` VALUES ('20', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-19');
+INSERT INTO `sign` VALUES ('21', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-20');
+INSERT INTO `sign` VALUES ('22', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-21');
+INSERT INTO `sign` VALUES ('23', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-22');
+INSERT INTO `sign` VALUES ('24', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-23');
+INSERT INTO `sign` VALUES ('25', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-24');
+INSERT INTO `sign` VALUES ('26', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-25');
+INSERT INTO `sign` VALUES ('27', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-26');
+INSERT INTO `sign` VALUES ('28', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-27');
+INSERT INTO `sign` VALUES ('29', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-28');
+INSERT INTO `sign` VALUES ('30', '20170729', '9:12:34', '1', '18:23:12', '0', '2017-07-29');
+INSERT INTO `sign` VALUES ('31', '666', '20:11:19', '1', '20:11:29', '0', '2017-08-02');
 
 -- ----------------------------
 -- Table structure for user
@@ -118,5 +147,9 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('20170729', 'admin', 'admin', '男', '22', '北京', '1', '20170731');
-INSERT INTO `user` VALUES ('20170731', 'haha', 'haha', '男', '32', '北京', '2', '0');
+INSERT INTO `user` VALUES ('0', '000', '000', '男', '43', '北京', '2', '20170733');
+INSERT INTO `user` VALUES ('666', '666', '666', '男', '54', '北京', '4', '0');
+INSERT INTO `user` VALUES ('9999', '999', '999', '男', '99', '北京', '2', '20170733');
+INSERT INTO `user` VALUES ('20170729', 'admin', 'admin', '男', '22', '北京', '1', '0');
+INSERT INTO `user` VALUES ('20170731', 'haha', 'haha', '男', '32', '北京', '2', '20170733');
+INSERT INTO `user` VALUES ('20170733', 'heihei', 'heihei', '男', '43', '北京', '3', '20170733');

@@ -32,15 +32,21 @@ $(document).ready(function(){
 });
 
 });
-function checkRange(){
-	if(${page}==${pageCount}){
-		alert("最后一页了！")
-	}else if(${page}==1){
-		alert("这是首页！")
+function checkLast(){
+	if(${page+1}>${pageCount}){
+		alert("最后一页了！");
 	}else{
 		return true;
 	}
 	return false;
+}
+function checkFirst(){
+	 if(${page-1}==0){
+		alert("这是首页！");
+	}else{
+		return true;
+	}
+	 return false;
 }
 </script>
 
@@ -114,11 +120,11 @@ function checkRange(){
     <div class="pagin">
     	<div class="message">共<i class="blue">${pageCount }</i>条记录，当前显示第&nbsp;<i class="blue">${page }&nbsp;</i>页</div>
         <ul class="paginList">
-        <li class="paginItem"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${page-1}" onclick="return checkRange();"><span class="pagepre"></span></a></li>
+        <li class="paginItem"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${page-1}" onclick="return checkFirst();"><span class="pagepre"></span></a></li>
         <c:forEach begin="1" end="${pageCount}" var="i">
         	<li class="paginItem <c:if test='${page==i}'>current</c:if>"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${i}">${i }</a></li>
         </c:forEach>
-        <li class="paginItem"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${page+1}" onclick="return checkRange();"><span class="pagenxt"></span></a></li>
+        <li class="paginItem"><a href="group?oper=showSign&unumber=${list[0].unumber}&uname=${uname}&page=${page+1}" onclick="return checkLast();"><span class="pagenxt"></span></a></li>
         </ul>
     </div>
     

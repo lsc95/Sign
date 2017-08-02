@@ -11,6 +11,6 @@ public interface GroupService {
 	//根据用户的number获取用户签到信息
 	List<Sign> getSignInfoService(String unumber, String page);
 	//根据学生学号获取学生的签到信息数
-	int getSignCountService(String unumber);
+	long getSignCountService(String unumber);
 
 }
