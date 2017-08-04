@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class DBUtils {
+import org.apache.log4j.Logger;
 
+public class DBUtils {
+	//获取日志输出对象
+	private static Logger logger = Logger.getLogger(DBUtils.class);
 	private DBUtils() {
 	}
 
@@ -17,9 +20,9 @@ public class DBUtils {
 			Class.forName("org.logicalcobwebs.proxool.ProxoolDriver");
 			return DriverManager.getConnection("proxool.test");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.toString());
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error("文件没有找到"+e.toString());
 		}
 		return null;
 	}
@@ -35,7 +38,7 @@ public class DBUtils {
 		try {
 			return conn.prepareStatement(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("创建preparedStatement失败:"+e.toString());
 		}
 		return null;
 	}
@@ -45,7 +48,7 @@ public class DBUtils {
 		try {
 			return conn.createStatement();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("创建Statement出现异常:"+e.toString());
 		}
 		return null;
 	}
@@ -56,7 +59,7 @@ public class DBUtils {
 			try {
 				ps.setObject((i+1), objects[i]);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("数据参数绑定出现异常:"+e.toString());
 			}
 		}
 	}
@@ -68,7 +71,7 @@ public class DBUtils {
 				if (closeable != null)
 					closeable.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("资源关闭出现异常:"+e.toString());
 			}
 		}
 	}
@@ -81,7 +84,7 @@ public class DBUtils {
 			bindParams(ps, objects);
 			i=ps.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("执行DML操作出现异常:"+e.toString());
 		}finally{
 			closeAll(ps,conn);
 		}
