@@ -44,7 +44,12 @@ public class UserServlet extends HttpServlet {
 		} else if ("info".equals(oper)) {
 			getUserInfo(req, resp);
 		} else {
+			if(req.getSession().getAttribute("user")==null){
+				resp.sendRedirect("/sign/login.jsp");
+				return;
+			}
 			System.out.println("UserServlet.userOut(" + oper + ")ц╩спур╣╫");
+			
 		}
 	}
 

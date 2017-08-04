@@ -4,6 +4,16 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>sign</display-name>
+	 <!-- Web项目中配置proxool，并自动加载 -->
+  	<servlet>
+	     <servlet-name>ServletConfigurator</servlet-name>
+	     <servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
+	     <init-param>
+	      <param-name>propertyFile</param-name>
+	      <param-value>WEB-INF/classes/proxool.properties</param-value>
+	     </init-param>
+	     <load-on-startup>1</load-on-startup>
+    </servlet>
 	<!-- 设置过滤器,设置编码以及过滤请求 -->
 	<filter>
 		<filter-name>encoding</filter-name>
@@ -19,15 +29,27 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>checkSession</filter-name>
+		<url-pattern>/admin</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>checkSession</filter-name>
+		<url-pattern>/group</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>checkSession</filter-name>
+		<url-pattern>/clazz</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>checkSession</filter-name>
 		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>checkSession</filter-name>
-		<url-pattern>/clazz/*</url-pattern>
+		<url-pattern>/group/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>checkSession</filter-name>
-		<url-pattern>/group/*</url-pattern>
+		<url-pattern>/clazz/*</url-pattern>
 	</filter-mapping>
 	<!-- 配置监听器 -->
 	<listener>
@@ -57,9 +79,6 @@
 		<servlet-name>AdminServlet</servlet-name>
 		<servlet-class>com.coderli.Servlet.AdminServlet</servlet-class>
 	</servlet>
-
-
-
 
 	<servlet-mapping>
 		<servlet-name>UserServlet</servlet-name>
